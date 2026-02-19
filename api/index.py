@@ -65,4 +65,4 @@ async def process_request(body: RequestBody):
             'breaches': breaches
         }
 
-    return output
+    return {"regions": output}
