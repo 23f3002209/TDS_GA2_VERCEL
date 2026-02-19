@@ -7,7 +7,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 
 # Basic CORS setup
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 
 # The "Safety Net": Ensures every response (even errors) has CORS headers
 @app.after_request
