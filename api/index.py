@@ -50,9 +50,9 @@ async def process_request(body: RequestBody):
                     breaches += 1
 
         if latency:
-            avg_latency = sum(latency) / len(latency)
+            avg_latency = float(sum(latency) / len(latency))
             p95_latency = float(np.percentile(latency, 95))
-            avg_uptime = sum(uptime) / len(uptime)
+            avg_uptime = float(sum(uptime) / len(uptime))
         else:
             avg_latency = 0.0
             p95_latency = 0.0
