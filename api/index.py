@@ -1,23 +1,33 @@
-import json
-import numpy as np
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from typing import List
-
+import numpy as np
+import json
+import os
 
 app = FastAPI()
 
-
-# Enable CORS for POST requests from any origin and allow all methods/headers
+# 1. Standard Middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],       # Allow all origins; adjust for security in production
-    allow_credentials=True,    # Allow cookies and credentials if needed
-    allow_methods=["*"],       # Allow all HTTP methods including OPTIONS
-    allow_headers=["*"]        # Allow all headers in requests
-    # 'expose_headers' is optional and usually not set to '*' (omit here)
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
+
+# 2. Manual Middleware for Headers (The "Safety Net")
+@app.middleware("http")
+async def add_cors_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "*"
+    return response
+
+# 3. Explicit OPTIONS handler
+@app.options("/{rest_of_path:path}")
+async def preflight():
+    return Response(status_code=200)
 
 
 class RequestBody(BaseModel):
