@@ -33,7 +33,7 @@ def read_root():
 @app.post("/")
 async def process_request(body: RequestBody):
     # Use relative path according to your project structure on Vercel
-    with open('vercel/q-vercel-latency.json') as file:
+    with open('./q-vercel-latency.json') as file:
         data = json.load(file)
     output = {}
 
