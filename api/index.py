@@ -1,8 +1,10 @@
-from fastapi import FastAPI, Request, Response
-from fastapi.middleware.cors import CORSMiddleware
-import numpy as np
 import json
-import os
+import numpy as np
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from typing import List
+
+from fastapi import FastAPI, Request, Response
 
 app = FastAPI()
 
@@ -28,7 +30,6 @@ async def add_cors_headers(request: Request, call_next):
 @app.options("/{rest_of_path:path}")
 async def preflight():
     return Response(status_code=200)
-
 
 class RequestBody(BaseModel):
     regions: List[str]
